@@ -18,11 +18,16 @@ const calculateBmi = (height: number, weight: number): string => {
 		return "Obese (Class II)";
 	} else if (result >= 40) {
 		return "Obese (Class III)";
+	} else {
+		return "Invalid value";
 	}
 };
 
 try {
 	const { height, weight } = parseArguments(process.argv);
+	if (height === undefined || weight === undefined) {
+		throw new Error("Height and weight must be provided and must be numbers.");
+	}
 	console.log(calculateBmi(height, weight));
 } catch (error: unknown) {
 	let errorMessage = "Something bad happened.";

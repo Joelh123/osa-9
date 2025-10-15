@@ -29,7 +29,7 @@ const calculateExercises = (period: number[], target: number): Result => {
 		rating = 1;
 	}
 
-	let ratingDescription: string;
+	let ratingDescription: string = "";
 	switch (rating) {
 		case 1:
 			ratingDescription = "Not good enough";
@@ -58,6 +58,9 @@ const calculateExercises = (period: number[], target: number): Result => {
 
 try {
 	const { target, numbers } = parseArguments(process.argv);
+	if (!numbers) {
+		throw new Error("Numbers array is undefined.");
+	}
 	console.log(calculateExercises(numbers, target));
 } catch (error: unknown) {
 	let errorMessage = "Something bad happened.";

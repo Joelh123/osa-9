@@ -29,5 +29,7 @@ export const parseArguments = (args: string[]) => {
 		const weight: number = Number(args[3]);
 
 		return { height, weight };
+	} else {
+		throw new Error("Invalid script name or arguments");
 	}
 };
