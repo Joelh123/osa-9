@@ -1,3 +1,5 @@
+import { parseArguments } from "./parseArguments";
+
 interface Result {
 	periodLength: number;
 	trainingDays: number;
@@ -8,18 +10,20 @@ interface Result {
 	average: number;
 }
 
-const calculateExercises = (week: number[], target: number): Result => {
-	const periodLength: number = week.length;
+const calculateExercises = (period: number[], target: number): Result => {
+	const periodLength: number = period.length;
 
-	const trainingDays: number = week.filter((d) => d !== 0).length;
+	const trainingDays: number = period.filter((d) => d !== 0).length;
 
 	const success: boolean =
-		week.filter((d) => d >= target).length === week.length ? true : false;
+		period.filter((d) => d >= target).length === period.length ? true : false;
 
 	let rating: number;
-	if (week.filter((d) => d >= target).length === 7) {
+	if (period.filter((d) => d >= target).length === period.length) {
 		rating = 3;
-	} else if (week.filter((d) => d >= target).length >= 4) {
+	} else if (
+		period.filter((d) => d >= target).length >= Math.floor(period.length / 2)
+	) {
 		rating = 2;
 	} else {
 		rating = 1;
@@ -38,8 +42,8 @@ const calculateExercises = (week: number[], target: number): Result => {
 			break;
 	}
 
-	const sum = week.reduce((x, y) => x + y);
-	const average = sum / week.length;
+	const sum = period.reduce((x, y) => x + y);
+	const average = sum / period.length;
 
 	return {
 		periodLength,
@@ -52,4 +56,14 @@ const calculateExercises = (week: number[], target: number): Result => {
 	};
 };
 
-console.log(calculateExercises([3, 2, 2, 4.5, 2, 3, 2], 3));
+try {
+	const { target, numbers } = parseArguments(process.argv);
+	console.log(calculateExercises(numbers, target));
+} catch (error: unknown) {
+	let errorMessage = "Something bad happened.";
+	if (error instanceof Error) {
+		errorMessage += " Error: " + error.message;
+	}
+
+	console.log(errorMessage);
+}

@@ -1,3 +1,5 @@
+import { parseArguments } from "./parseArguments";
+
 const calculateBmi = (height: number, weight: number): string => {
 	const result: number = weight / (height / 100) ** 2;
 	if (result < 16) {
@@ -19,4 +21,14 @@ const calculateBmi = (height: number, weight: number): string => {
 	}
 };
 
-console.log(calculateBmi(180, 74));
+try {
+	const { height, weight } = parseArguments(process.argv);
+	console.log(calculateBmi(height, weight));
+} catch (error: unknown) {
+	let errorMessage = "Something bad happened.";
+	if (error instanceof Error) {
+		errorMessage += " Error: " + error.message;
+	}
+
+	console.log(errorMessage);
+}
