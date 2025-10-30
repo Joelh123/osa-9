@@ -23,19 +23,21 @@ const calculateBmi = (height: number, weight: number): string => {
 	}
 };
 
-try {
-	const { height, weight } = parseArguments(process.argv);
-	if (height === undefined || weight === undefined) {
-		throw new Error("Height and weight must be provided and must be numbers.");
-	}
-	console.log(calculateBmi(height, weight));
-} catch (error: unknown) {
-	let errorMessage = "Something bad happened.";
-	if (error instanceof Error) {
-		errorMessage += " Error: " + error.message;
-	}
+if (require.main === module) {
+	try {
+		const { height, weight } = parseArguments(process.argv);
+		if (height === undefined || weight === undefined) {
+			throw new Error("Height and weight must be provided and must be numbers.");
+		}
+		console.log(calculateBmi(height, weight));
+	} catch (error: unknown) {
+		let errorMessage = "Something bad happened.";
+		if (error instanceof Error) {
+			errorMessage += " Error: " + error.message;
+		}
 
-	console.log(errorMessage);
+		console.log(errorMessage);
+	}
 }
 
 export default calculateBmi;

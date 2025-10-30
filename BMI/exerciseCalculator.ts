@@ -55,18 +55,25 @@ const calculateExercises = (period: number[], target: number): Result => {
 		average,
 	};
 };
-
-try {
-	const { target, numbers } = parseArguments(process.argv);
-	if (!numbers) {
-		throw new Error("Numbers array is undefined.");
+if (require.main === module) {
+	try {
+		const result = parseArguments(process.argv);
+		if (
+			result &&
+			typeof result.target === "number" &&
+			Array.isArray(result.numbers)
+		) {
+			console.log(calculateExercises(result.numbers, result.target));
+		} else {
+			throw new Error("Not enough arguments");
+		}
+	} catch (error: unknown) {
+		let errorMessage = "Something bad happened.";
+		if (error instanceof Error) {
+			errorMessage += " Error: " + error.message;
+		}
+		console.log(errorMessage);
 	}
-	console.log(calculateExercises(numbers, target));
-} catch (error: unknown) {
-	let errorMessage = "Something bad happened.";
-	if (error instanceof Error) {
-		errorMessage += " Error: " + error.message;
-	}
-
-	console.log(errorMessage);
 }
+
+export default calculateExercises;
