@@ -1,4 +1,5 @@
 export const parseArguments = (args: string[]) => {
+	if (require.main !== module) null;
 	if (args.length < 4) throw new Error("Not enough arguments");
 
 	if (args[1].endsWith("exerciseCalculator.ts")) {
