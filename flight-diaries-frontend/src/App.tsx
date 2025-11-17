@@ -37,7 +37,9 @@ const App = () => {
 			setComment("");
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				setNotification(String(error.response?.data) ?? "An error occurred");
+				setNotification(
+					error.response?.data ? error.response.data : "An error occurred"
+				);
 
 				setTimeout(() => {
 					setNotification("");
@@ -60,26 +62,48 @@ const App = () => {
 				<div>
 					date
 					<input
-						type="text"
+						type="date"
 						value={date}
 						onChange={({ target }) => setDate(target.value)}
 					/>
 				</div>
 				<div>
-					visibility
+					visibility: <label>great</label>
 					<input
-						type="text"
-						value={visibility}
-						onChange={({ target }) => setVisibility(target.value)}
+						name="visibility"
+						type="radio"
+						onChange={() => setVisibility("great")}
+					/>
+					<label>good</label>
+					<input
+						name="visibility"
+						type="radio"
+						onChange={() => setVisibility("good")}
+					/>
+					<label>ok</label>
+					<input
+						name="visibility"
+						type="radio"
+						onChange={() => setVisibility("ok")}
+					/>
+					<label>poor</label>
+					<input
+						name="visibility"
+						type="radio"
+						onChange={() => setVisibility("poor")}
 					/>
 				</div>
 				<div>
-					weather
-					<input
-						type="text"
-						value={weather}
-						onChange={({ target }) => setWeather(target.value)}
-					/>
+					weather: <label>sunny</label>
+					<input name="weather" type="radio" onChange={() => setWeather("sunny")} />
+					<label>rainy</label>
+					<input name="weather" type="radio" onChange={() => setWeather("rainy")} />
+					<label>cloudy</label>
+					<input name="weather" type="radio" onChange={() => setWeather("cloudy")} />
+					<label>stormy</label>
+					<input name="weather" type="radio" onChange={() => setWeather("stormy")} />
+					<label>windy</label>
+					<input name="weather" type="radio" onChange={() => setWeather("windy")} />
 				</div>
 				<div>
 					comment
