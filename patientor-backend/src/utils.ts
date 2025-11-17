@@ -7,6 +7,7 @@ const NewEntrySchema = z.object({
 	ssn: z.string().min(1),
 	gender: z.nativeEnum(Gender),
 	occupation: z.string().min(1),
+	entries: z.array(z.any()),
 });
 
 export default NewEntrySchema;
