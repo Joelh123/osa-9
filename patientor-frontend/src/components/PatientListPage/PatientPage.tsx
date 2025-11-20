@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
-import patientService from "../services/patients";
+import patientService from "../../services/patients";
 import { useEffect, useState } from "react";
-import { Patient } from "../types";
+import { Patient } from "../../types";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { QuestionMark } from "@mui/icons-material";
@@ -42,6 +42,19 @@ const PatientPage = () => {
 			</h1>
 			<div>ssn: {patient.ssn}</div>
 			<div>occupation: {patient.occupation}</div>
+			<h2>Entries</h2>
+			<div>
+				{patient.entries.map((e) => (
+					<div key={e.id}>
+						{e.date} {e.description}
+						<ul>
+							{e.diagnosisCodes?.map((c) => (
+								<li key={c}>{c}</li>
+							))}
+						</ul>
+					</div>
+				))}
+			</div>
 		</div>
 	);
 };
