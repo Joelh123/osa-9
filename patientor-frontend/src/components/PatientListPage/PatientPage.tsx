@@ -6,6 +6,7 @@ import { Diagnosis, Patient } from "../../types";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { QuestionMark } from "@mui/icons-material";
+import EntryDetails from "./EntriesView/EntryDetails";
 
 const PatientPage = () => {
 	const [patient, setPatient] = useState<Patient | null>(null);
@@ -42,6 +43,10 @@ const PatientPage = () => {
 			break;
 	}
 
+	const padding = {
+		paddingBottom: "10px",
+	};
+
 	return (
 		<div>
 			<h1>
@@ -52,16 +57,9 @@ const PatientPage = () => {
 			<h2>Entries</h2>
 			<div>
 				{patient.entries.length !== 0 ? (
-					patient.entries.map((e) => (
-						<div key={e.id}>
-							{e.date} {e.description}
-							<ul>
-								{e.diagnosisCodes?.map((c) => (
-									<li key={c}>
-										{c} {diagnoses.find((d) => d.code === c)?.name}
-									</li>
-								))}
-							</ul>
+					patient.entries.map((entry) => (
+						<div key={entry.id} style={padding}>
+							<EntryDetails entry={entry} diagnoses={diagnoses} />
 						</div>
 					))
 				) : (
