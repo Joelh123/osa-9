@@ -3,10 +3,11 @@ import {
 	NonSensitivePatientEntry,
 	PatientEntry,
 	NewPatientEntry,
+	Entry,
 } from "../types";
 import { v1 as uuid } from "uuid";
 
-const id = uuid();
+const v1id = uuid();
 
 const getEntries = (): PatientEntry[] => {
 	return patients;
@@ -30,13 +31,35 @@ const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
 };
 
 const addPatient = (object: NewPatientEntry): PatientEntry => {
-	const newPatientEntry = {
-		id: id,
+	const newPatientEntry: PatientEntry = {
+		id: v1id,
 		...object,
+		entries: [],
 	};
 
 	patients.push(newPatientEntry);
 	return newPatientEntry;
+};
+
+const addEntry = (object: Entry, id: string) => {
+	const { name, dateOfBirth, ssn, gender, occupation, entries } =
+		patients.find((p) => p.id === id) || {};
+
+	if (!name || !dateOfBirth || !ssn || !gender || !occupation || !entries) {
+		return null;
+	}
+
+	const updatedPatient: PatientEntry = {
+		id: id,
+		name: name,
+		dateOfBirth: dateOfBirth,
+		ssn: ssn,
+		gender: gender,
+		occupation: occupation,
+		entries: [...entries, { ...object, id: v1id }],
+	};
+
+	return patients.map((p) => (p.id === id ? updatedPatient : p));
 };
 
 export default {
@@ -44,4 +67,5 @@ export default {
 	getSingleEntry,
 	getNonSensitiveEntries,
 	addPatient,
+	addEntry,
 };

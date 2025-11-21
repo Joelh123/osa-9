@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import patientService from "../services/patientService";
 import z from "zod";
-import NewEntrySchema from "../utils";
+import { NewPatientEntrySchema } from "../utils";
 import { NewPatientEntry, PatientEntry } from "../types";
 
 const router = express.Router();
@@ -20,7 +20,7 @@ router.get("/:id", (req, res) => {
 
 const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
 	try {
-		NewEntrySchema.parse(req.body);
+		NewPatientEntrySchema.parse(req.body);
 		console.log(req.body);
 		next();
 	} catch (error: unknown) {
@@ -52,6 +52,12 @@ router.post(
 		res.json(addedEntry);
 	}
 );
+
+router.post("/:id/entries", (req, res) => {
+	const addedEntry = patientService.addEntry(req.body, req.params.id);
+
+	res.json(addedEntry);
+});
 
 router.use(errorMiddleware);
 
