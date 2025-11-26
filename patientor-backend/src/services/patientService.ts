@@ -7,8 +7,6 @@ import {
 } from "../types";
 import { v1 as uuid } from "uuid";
 
-const v1id = uuid();
-
 const getEntries = (): PatientEntry[] => {
 	return patients;
 };
@@ -32,7 +30,7 @@ const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
 
 const addPatient = (object: NewPatientEntry): PatientEntry => {
 	const newPatientEntry: PatientEntry = {
-		id: v1id,
+		id: uuid(),
 		...object,
 		entries: [],
 	};
@@ -56,10 +54,12 @@ const addEntry = (object: Entry, id: string) => {
 		ssn: ssn,
 		gender: gender,
 		occupation: occupation,
-		entries: [...entries, { ...object, id: v1id }],
+		entries: [...entries, { ...object, id: uuid() }],
 	};
 
-	return patients.map((p) => (p.id === id ? updatedPatient : p));
+	patients.map((p) => (p.id === id ? updatedPatient : p));
+
+	return updatedPatient;
 };
 
 export default {

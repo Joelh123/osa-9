@@ -6,7 +6,8 @@ import { Diagnosis, Patient } from "../../types";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { QuestionMark } from "@mui/icons-material";
-import EntryDetails from "./EntriesView/EntryDetails";
+import EntryDetails from "../EntriesView/EntryDetails";
+import EntryForm from "../AddEntryModal/EntryForm";
 
 const PatientPage = () => {
 	const [patient, setPatient] = useState<Patient | null>(null);
@@ -25,7 +26,7 @@ const PatientPage = () => {
 		};
 		void fetchPatient();
 		void fetchDiagnoses();
-	}, []);
+	}, [id]);
 	if (!patient) {
 		return <div>Patient not found</div>;
 	}
@@ -54,6 +55,7 @@ const PatientPage = () => {
 			</h1>
 			<div>ssn: {patient.ssn}</div>
 			<div>occupation: {patient.occupation}</div>
+			<EntryForm patient={patient} setPatient={setPatient} />
 			<h2>Entries</h2>
 			<div>
 				{patient.entries.length !== 0 ? (

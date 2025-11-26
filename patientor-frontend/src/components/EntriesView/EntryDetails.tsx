@@ -1,4 +1,4 @@
-import { Diagnosis, Entry } from "../../../types";
+import { Diagnosis, Entry } from "../../types";
 import HealthCheck from "./HealthCheck";
 import Hospital from "./Hospital";
 import OccupationalHealthcare from "./OccupationalHealthcare";

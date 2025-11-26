@@ -3,7 +3,7 @@ import { Gender, HealthRating } from "./types";
 
 const EntrySchema = z.object({
 	description: z.string().min(1),
-	date: z.string().min(1),
+	date: z.string(),
 	specialist: z.string().min(1),
 	diagnosisCodes: z.array(z.any()).optional(),
 });
@@ -27,14 +27,14 @@ export const NewOccupationalHealthcareEntrySchema = EntrySchema.merge(
 	})
 );
 
-export const HealthCheckRatingEntrySchema = EntrySchema.merge(
+export const NewHealthCheckRatingEntrySchema = EntrySchema.merge(
 	z.object({
-		type: z.string().min(1),
-		healthRating: z.nativeEnum(HealthRating),
+		type: z.literal("HealthCheck"),
+		healthCheckRating: z.nativeEnum(HealthRating),
 	})
 );
 
-export const Hospital = EntrySchema.merge(
+export const NewHospitalEntrySchema = EntrySchema.merge(
 	z.object({
 		type: z.string().min(1),
 		discharge: z.object({ date: z.string().min(1), criteria: z.string().min(1) }),

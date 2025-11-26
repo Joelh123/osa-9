@@ -1,12 +1,12 @@
-import { Diagnosis, HospitalEntry } from "../../../types";
-import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import { Diagnosis, OccupationalHealthcareEntry } from "../../types";
+import WorkIcon from "@mui/icons-material/Work";
 
 interface Props {
-	entry: HospitalEntry;
+	entry: OccupationalHealthcareEntry;
 	diagnoses: Diagnosis[];
 }
 
-const Hospital = ({ entry, diagnoses }: Props) => {
+const OccupationalHealthcare = ({ entry, diagnoses }: Props) => {
 	const style = {
 		border: "2px solid",
 		padding: "5px",
@@ -15,7 +15,7 @@ const Hospital = ({ entry, diagnoses }: Props) => {
 	return (
 		<div style={style}>
 			<div>
-				{entry.date} {<LocalHospitalIcon />}
+				{entry.date} {<WorkIcon />} {entry.employerName}
 			</div>
 			<div>
 				<i>{entry.description}</i>
@@ -32,4 +32,4 @@ const Hospital = ({ entry, diagnoses }: Props) => {
 	);
 };
 
-export default Hospital;
+export default OccupationalHealthcare;

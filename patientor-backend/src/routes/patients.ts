@@ -1,7 +1,12 @@
 import express, { Request, Response, NextFunction } from "express";
 import patientService from "../services/patientService";
 import z from "zod";
-import { NewPatientEntrySchema } from "../utils";
+import {
+	NewHealthCheckRatingEntrySchema,
+	NewHospitalEntrySchema,
+	NewOccupationalHealthcareEntrySchema,
+	NewPatientEntrySchema,
+} from "../utils";
 import { NewPatientEntry, PatientEntry } from "../types";
 
 const router = express.Router();
@@ -21,6 +26,28 @@ router.get("/:id", (req, res) => {
 const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
 	try {
 		NewPatientEntrySchema.parse(req.body);
+		console.log(req.body);
+		next();
+	} catch (error: unknown) {
+		next(error);
+	}
+};
+
+const newEntryParser = (req: Request, _res: Response, next: NextFunction) => {
+	try {
+		switch (req.body.type) {
+			case "HealthCheck":
+				NewHealthCheckRatingEntrySchema.parse(req.body);
+				break;
+			case "OccupationalHealthcare":
+				NewOccupationalHealthcareEntrySchema.parse(req.body);
+				break;
+			case "Hospital":
+				NewHospitalEntrySchema.parse(req.body);
+				break;
+			default:
+				throw new Error("Incorrect or missing type");
+		}
 		console.log(req.body);
 		next();
 	} catch (error: unknown) {
@@ -53,7 +80,7 @@ router.post(
 	}
 );
 
-router.post("/:id/entries", (req, res) => {
+router.post("/:id/entries", newEntryParser, (req, res) => {
 	const addedEntry = patientService.addEntry(req.body, req.params.id);
 
 	res.json(addedEntry);
