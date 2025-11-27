@@ -7,11 +7,12 @@ import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { QuestionMark } from "@mui/icons-material";
 import EntryDetails from "../EntriesView/EntryDetails";
-import EntryForm from "../AddEntryModal/EntryForm";
+import AddEntryModal from "../AddEntryModal";
 
 const PatientPage = () => {
 	const [patient, setPatient] = useState<Patient | null>(null);
 	const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
+	const [refreshFlag, setRefreshFlag] = useState(false);
 
 	const id = useParams<{ id: string }>().id;
 
@@ -26,10 +27,12 @@ const PatientPage = () => {
 		};
 		void fetchPatient();
 		void fetchDiagnoses();
-	}, [id]);
+	}, [id, refreshFlag]);
 	if (!patient) {
 		return <div>Patient not found</div>;
 	}
+
+	const triggerRefresh = () => setRefreshFlag((prev) => !prev);
 
 	let genderIcon;
 	switch (patient.gender) {
@@ -55,7 +58,11 @@ const PatientPage = () => {
 			</h1>
 			<div>ssn: {patient.ssn}</div>
 			<div>occupation: {patient.occupation}</div>
-			<EntryForm patient={patient} setPatient={setPatient} />
+			<AddEntryModal
+				patient={patient}
+				setPatient={setPatient}
+				triggerRefresh={triggerRefresh}
+			/>
 			<h2>Entries</h2>
 			<div>
 				{patient.entries.length !== 0 ? (

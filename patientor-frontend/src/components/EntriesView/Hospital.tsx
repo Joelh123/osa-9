@@ -27,6 +27,10 @@ const Hospital = ({ entry, diagnoses }: Props) => {
 					</li>
 				))}
 			</ul>
+			<div style={{ paddingBottom: "16px" }}>
+				<div>Date of discharge: {entry.discharge.date}</div>
+				<div>Criteria for discharge: {entry.discharge.criteria}</div>
+			</div>
 			<div>diagnosed by {entry.specialist}</div>
 		</div>
 	);

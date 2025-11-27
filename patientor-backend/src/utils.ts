@@ -22,7 +22,10 @@ export const NewOccupationalHealthcareEntrySchema = EntrySchema.merge(
 		type: z.string().min(1),
 		employerName: z.string().min(1),
 		sickLeave: z
-			.object({ startDate: z.string().min(1), endDate: z.string().min(1) })
+			.object({
+				startDate: z.string().min(1),
+				endDate: z.string().min(1),
+			})
 			.optional(),
 	})
 );

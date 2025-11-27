@@ -57,7 +57,12 @@ const addEntry = (object: Entry, id: string) => {
 		entries: [...entries, { ...object, id: uuid() }],
 	};
 
-	patients.map((p) => (p.id === id ? updatedPatient : p));
+	const patientIndex = patients.findIndex((p) => p.id === id);
+	if (patientIndex !== -1) {
+		patients[patientIndex] = updatedPatient;
+	}
+
+	console.log(patients);
 
 	return updatedPatient;
 };

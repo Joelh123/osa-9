@@ -27,6 +27,15 @@ const OccupationalHealthcare = ({ entry, diagnoses }: Props) => {
 					</li>
 				))}
 			</ul>
+			{entry.sickLeave ? (
+				<div>
+					Sick leave:
+					<ul style={{ listStyleType: "none" }}>
+						<li>Start: {entry.sickLeave.startDate}</li>
+						<li>End: {entry.sickLeave.endDate}</li>
+					</ul>
+				</div>
+			) : null}
 			<div>diagnosed by {entry.specialist}</div>
 		</div>
 	);
