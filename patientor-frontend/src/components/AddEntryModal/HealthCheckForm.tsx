@@ -1,7 +1,16 @@
-import { Alert, Button, DialogContent, Grid, TextField } from "@mui/material";
+import {
+	Alert,
+	Button,
+	DialogContent,
+	Grid,
+	InputLabel,
+	MenuItem,
+	Select,
+	TextField,
+} from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import patientService from "../../services/patients";
-import { Patient } from "../../types";
+import { Diagnosis, Patient } from "../../types";
 import axios from "axios";
 
 interface HealthCheckFormProps {
@@ -10,6 +19,7 @@ interface HealthCheckFormProps {
 	patient: Patient;
 	setPatient: Dispatch<SetStateAction<Patient | null>>;
 	triggerRefresh: () => void;
+	diagnoses: Diagnosis[];
 }
 
 const HealthCheckForm = ({
@@ -18,6 +28,7 @@ const HealthCheckForm = ({
 	patient,
 	setPatient,
 	triggerRefresh,
+	diagnoses,
 }: HealthCheckFormProps) => {
 	const [description, setDescription] = useState("");
 	const [date, setDate] = useState("");
@@ -83,10 +94,12 @@ const HealthCheckForm = ({
 					onChange={({ target }) => setDescription(target.value)}
 				/>
 				<TextField
-					label="Date YYYY-MM-DD*"
+					label="Date*"
+					type="date"
 					fullWidth
 					value={date}
 					onChange={({ target }) => setDate(target.value)}
+					InputLabelProps={{ shrink: true }}
 				/>
 				<TextField
 					label="Specialist*"
@@ -100,14 +113,23 @@ const HealthCheckForm = ({
 					value={healthCheckRating}
 					onChange={({ target }) => setHealthCheckRating(Number(target.value))}
 				/>
-				<TextField
-					label="Diagnosis Codes"
+				<InputLabel>Diagnosis codes</InputLabel>
+				<Select
 					fullWidth
-					value={diagnosisCodes.join(", ")}
+					multiple
+					value={diagnosisCodes}
 					onChange={({ target }) =>
-						setDiagnosisCodes(target.value.split(",").map((code) => code.trim()))
+						setDiagnosisCodes(
+							typeof target.value === "string" ? target.value.split(",") : target.value
+						)
 					}
-				/>
+				>
+					{diagnoses.map((d) => (
+						<MenuItem key={d.code} value={d.code}>
+							{d.code}
+						</MenuItem>
+					))}
+				</Select>
 				<Grid>
 					<Grid item>
 						<Button

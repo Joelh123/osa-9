@@ -3,7 +3,7 @@ import { Gender, HealthRating } from "./types";
 
 const EntrySchema = z.object({
 	description: z.string().min(1),
-	date: z.string(),
+	date: z.string().date(),
 	specialist: z.string().min(1),
 	diagnosisCodes: z.array(z.any()).optional(),
 });

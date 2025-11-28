@@ -1,10 +1,10 @@
 import { Button } from "@mui/material";
-import { useState } from "react";
-import { Patient } from "../../types";
+import { useEffect, useState } from "react";
+import { Diagnosis, Patient } from "../../types";
 import HealthCheckForm from "./HealthCheckForm";
 import OccupationalHealthcareForm from "./OccupationalHealthcareForm";
 import HospitalForm from "./HospitalForm";
-
+import diagnosisService from "../../services/diagnoses";
 interface Props {
 	patient: Patient;
 	setPatient: React.Dispatch<React.SetStateAction<Patient | null>>;
@@ -14,6 +14,15 @@ interface Props {
 const AddEntryModal = ({ patient, setPatient, triggerRefresh }: Props) => {
 	const [visible, setVisible] = useState(false);
 	const [selectedType, setSelectedType] = useState("");
+	const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
+
+	useEffect(() => {
+		const fetchDiagnoses = async () => {
+			const result = await diagnosisService.getAll();
+			setDiagnoses(result);
+		};
+		void fetchDiagnoses();
+	}, []);
 
 	const hideWhenVisible = {
 		display: visible ? "none" : "",
@@ -68,6 +77,7 @@ const AddEntryModal = ({ patient, setPatient, triggerRefresh }: Props) => {
 									patient={patient}
 									setPatient={setPatient}
 									triggerRefresh={triggerRefresh}
+									diagnoses={diagnoses}
 								/>
 							);
 						case "OccupationalHealthcare":
@@ -78,6 +88,7 @@ const AddEntryModal = ({ patient, setPatient, triggerRefresh }: Props) => {
 									patient={patient}
 									setPatient={setPatient}
 									triggerRefresh={triggerRefresh}
+									diagnoses={diagnoses}
 								/>
 							);
 						case "Hospital":
@@ -88,6 +99,7 @@ const AddEntryModal = ({ patient, setPatient, triggerRefresh }: Props) => {
 									patient={patient}
 									setPatient={setPatient}
 									triggerRefresh={triggerRefresh}
+									diagnoses={diagnoses}
 								/>
 							);
 						default:

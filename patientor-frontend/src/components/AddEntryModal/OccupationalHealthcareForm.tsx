@@ -4,11 +4,14 @@ import {
 	Button,
 	DialogContent,
 	Grid,
+	InputLabel,
+	MenuItem,
+	Select,
 	TextField,
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import patientService from "../../services/patients";
-import { Patient } from "../../types";
+import { Diagnosis, Patient } from "../../types";
 import axios from "axios";
 
 interface OccupationalHealthcareFormProps {
@@ -17,6 +20,7 @@ interface OccupationalHealthcareFormProps {
 	patient: Patient;
 	setPatient: Dispatch<SetStateAction<Patient | null>>;
 	triggerRefresh: () => void;
+	diagnoses: Diagnosis[];
 }
 
 const OccupationalHealthcareForm = ({
@@ -25,6 +29,7 @@ const OccupationalHealthcareForm = ({
 	patient,
 	setPatient,
 	triggerRefresh,
+	diagnoses,
 }: OccupationalHealthcareFormProps) => {
 	const [description, setDescription] = useState("");
 	const [date, setDate] = useState("");
@@ -98,10 +103,12 @@ const OccupationalHealthcareForm = ({
 					onChange={({ target }) => setDescription(target.value)}
 				/>
 				<TextField
-					label="Date YYYY-MM-DD*"
+					label="Date*"
+					type="date"
 					fullWidth
 					value={date}
 					onChange={({ target }) => setDate(target.value)}
+					InputLabelProps={{ shrink: true }}
 				/>
 				<TextField
 					label="Specialist*"
@@ -116,30 +123,52 @@ const OccupationalHealthcareForm = ({
 					onChange={({ target }) => setEmployerName(target.value)}
 				/>
 				<Box display="flex" alignItems="center" gap={2}>
-					<span style={{ fontSize: "18px", minWidth: 70, whiteSpace: "nowrap" }}>
+					<InputLabel
+						style={{
+							whiteSpace: "nowrap",
+							overflow: "visible",
+							textOverflow: "unset",
+							maxWidth: "100%",
+							background: "white",
+							paddingRight: 8,
+						}}
+					>
 						Sick leave
-					</span>
+					</InputLabel>
 					<TextField
 						label="Start date"
+						type="date"
 						fullWidth
 						value={sickLeaveStart}
 						onChange={({ target }) => setSickLeaveStart(target.value)}
+						InputLabelProps={{ shrink: true }}
 					/>
 					<TextField
 						label="End date"
+						type="date"
 						fullWidth
 						value={sickLeaveEnd}
 						onChange={({ target }) => setSickLeaveEnd(target.value)}
+						InputLabelProps={{ shrink: true }}
 					/>
 				</Box>
-				<TextField
-					label="Diagnosis Codes"
+				<InputLabel>Diagnosis codes</InputLabel>
+				<Select
 					fullWidth
-					value={diagnosisCodes.join(", ")}
+					multiple
+					value={diagnosisCodes}
 					onChange={({ target }) =>
-						setDiagnosisCodes(target.value.split(",").map((code) => code.trim()))
+						setDiagnosisCodes(
+							typeof target.value === "string" ? target.value.split(",") : target.value
+						)
 					}
-				/>
+				>
+					{diagnoses.map((d) => (
+						<MenuItem key={d.code} value={d.code}>
+							{d.code}
+						</MenuItem>
+					))}
+				</Select>
 				<Grid>
 					<Grid item>
 						<Button
